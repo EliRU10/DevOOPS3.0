@@ -1,61 +1,96 @@
+<?php
+$devoops_uri = get_template_directory_uri() . '/devoops';
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Estudio de Peticiones y Quejas</title>
+  
+  <!-- Bootstrap CSS CDN -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  
+  <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <style>
     body {
-      padding-top: 60px;
+      padding-top: 40px;
+      background-color: #e8f5e9; /* Verde muy claro de fondo */
+    }
+    .main-title {
+      font-weight: 700;
+      font-size: 3rem; /* Título principal más grande */
+    }
+    .card-header {
+      font-weight: 700;
+      font-size: 1.75rem; /* Titulos de cards más grandes */
+    }
+    .card-title {
+      font-size: 2.25rem; /* Títulos dentro de cards resumen */
+      font-weight: 600;
+    }
+    .display-4 {
+      font-size: 3.5rem; /* Número destacado más grande */
+      font-weight: 700;
     }
   </style>
 </head>
 <body>
-  <!-- Barra superior -->
-  <nav class="navbar navbar-dark bg-dark fixed-top">
-    <div class="container-fluid">
-      <span class="navbar-brand mb-0 h1">Estadísticas de Quejas y Peticiones</span>
-    </div>
-  </nav>
 
   <div class="container mt-4">
-    <h2 class="text-center mb-4">Resumen General</h2>
-    <div class="row text-center mb-4">
-      <div class="col-md-6">
-        <div class="card text-bg-danger">
-          <div class="card-body">
+    <h2 class="text-center mb-4 text-success main-title">Resumen General</h2>
+    <div class="row text-center mb-4 gx-4 gy-4">
+      <div class="col-12 col-md-4">
+        <div class="card text-bg-success bg-opacity-75 h-100">
+          <div class="card-body d-flex flex-column justify-content-center">
             <h5 class="card-title">Total de Quejas</h5>
-            <p class="display-6">120</p>
+            <p class="display-4">120</p>
           </div>
         </div>
       </div>
-      <div class="col-md-6">
-        <div class="card text-bg-primary">
-          <div class="card-body">
+      <div class="col-12 col-md-4">
+        <div class="card text-bg-success bg-opacity-50 h-100">
+          <div class="card-body d-flex flex-column justify-content-center">
             <h5 class="card-title">Total de Peticiones</h5>
-            <p class="display-6">85</p>
+            <p class="display-4">85</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="card text-bg-success bg-opacity-25 h-100">
+          <div class="card-body d-flex flex-column justify-content-center">
+            <h5 class="card-title">Satisfacción Ciudadana</h5>
+            <p class="display-4">75%</p>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Gráficos -->
-    <div class="row">
-      <div class="col-md-6 mb-4">
-        <div class="card">
-          <div class="card-header bg-danger text-white">Categorías de Quejas</div>
+    <div class="row gx-4 gy-4">
+      <div class="col-12 col-lg-6">
+        <div class="card border-success h-100">
+          <div class="card-header bg-success text-white">Categorías de Quejas</div>
           <div class="card-body">
             <canvas id="quejasChart"></canvas>
           </div>
         </div>
       </div>
-      <div class="col-md-6 mb-4">
-        <div class="card">
-          <div class="card-header bg-primary text-white">Categorías de Peticiones</div>
+      <div class="col-12 col-lg-6">
+        <div class="card border-success h-100">
+          <div class="card-header bg-success text-white">Categorías de Peticiones</div>
           <div class="card-body">
             <canvas id="peticionesChart"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-lg-6">
+        <div class="card border-success h-100">
+          <div class="card-header bg-success text-white">Satisfacción Ciudadana</div>
+          <div class="card-body">
+            <canvas id="satisfaccionChart"></canvas>
           </div>
         </div>
       </div>
@@ -64,7 +99,6 @@
 
   <!-- Scripts para gráficos -->
   <script>
-    // Datos simulados
     const categoriasQuejas = [
       "Basura no recolectada",
       "Falta de alumbrado",
@@ -87,7 +121,16 @@
     ];
     const datosPeticiones = [20, 18, 15, 12, 10, 6, 4];
 
-    // Gráfico de Quejas
+    const categoriasSatisfaccion = [
+      "Muy satisfecho",
+      "Satisfecho",
+      "Neutral",
+      "Insatisfecho",
+      "Muy insatisfecho"
+    ];
+    const datosSatisfaccion = [40, 35, 15, 7, 3];
+
+    // Gráfico de Quejas - barras horizontales
     new Chart(document.getElementById("quejasChart"), {
       type: "bar",
       data: {
@@ -95,7 +138,7 @@
         datasets: [{
           label: "Cantidad de Quejas",
           data: datosQuejas,
-          backgroundColor: "#dc3545"
+          backgroundColor: "#2e7d32" // verde oscuro
         }]
       },
       options: {
@@ -106,7 +149,7 @@
       }
     });
 
-    // Gráfico de Peticiones
+    // Gráfico de Peticiones - barras horizontales
     new Chart(document.getElementById("peticionesChart"), {
       type: "bar",
       data: {
@@ -114,13 +157,45 @@
         datasets: [{
           label: "Cantidad de Peticiones",
           data: datosPeticiones,
-          backgroundColor: "#0d6efd"
+          backgroundColor: "#66bb6a" // verde claro
         }]
       },
       options: {
         indexAxis: 'y',
         scales: {
           x: { beginAtZero: true }
+        }
+      }
+    });
+
+    // Gráfico circular - Satisfacción Ciudadana
+    new Chart(document.getElementById("satisfaccionChart"), {
+      type: "pie",
+      data: {
+        labels: categoriasSatisfaccion,
+        datasets: [{
+          label: "Nivel de Satisfacción",
+          data: datosSatisfaccion,
+          backgroundColor: [
+            "#1b5e20", // Muy satisfecho - verde oscuro
+            "#388e3c", // Satisfecho
+            "#81c784", // Neutral
+            "#c8e6c9", // Insatisfecho - verde muy claro
+            "#e8f5e9"  // Muy insatisfecho - verde ultra claro
+          ],
+          borderColor: "#ffffff",
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              color: "#1b3e1b"
+            }
+          }
         }
       }
     });
@@ -129,3 +204,4 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
